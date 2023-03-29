@@ -1,9 +1,35 @@
+.Grid {
+    height: 75vh;
+  }
+  
 .card {
     position: relative;
 }
-
+  
 .card img {
     border-width: 2px;
     border-radius: 10px;
     border-style: solid;
 }
+  
+.card .frontOfCard {
+    transform: rotateY(90deg);
+    position: absolute;
+    z-index: 0;
+    opacity: 0;
+}
+  
+.card .backOfCard {
+    position: relative;
+    z-index: 1;
+}
+  
+.flipped .frontOfCard {
+    transform: rotateY(0deg);
+    opacity: 1;
+}
+  
+.flipped .backOfCard {
+    opacity: 0;
+}
+  
