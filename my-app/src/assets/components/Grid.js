@@ -14,6 +14,7 @@ function Grid() {
     const [tries, setTries] = useState(0)
     const [firstChoice, setFirstChoice] = useState(null)
     const [secondChoice, setSecondChoice] = useState(null)
+    const [isProcessing, setIsProcessing] = useState(false);
 
 
     const cardImages = [australiaPNG, brazilPNG, canadaPNG, chinaPNG, russiaPNG, usPNG];
@@ -27,12 +28,14 @@ function Grid() {
     
     //Check choices
     function clickCallee(card) {
-        if (firstChoice) {
-            setSecondChoice(card);
-        } else {
+        // If the first choice is not set, set it to the clicked card
+        if (firstChoice === null) {
             setFirstChoice(card);
         }
-        
+        // If the first choice is set but the second choice is not, set the second choice to the clicked card
+        else if (secondChoice === null) {
+            setSecondChoice(card);
+        }
     }
 
     //Card choice comparison
@@ -41,14 +44,14 @@ function Grid() {
             if(firstChoice.src === secondChoice.src) {
                 setCards(previous => {
                     return previous.map(card => {
-                        if(cards.src === firstChoice.src) {
+                        if(card.src === firstChoice.src || card.src === secondChoice.src) {
                             return {...card, matched: true}
-                        }
+                         } 
                         else {
                             return card
-                        }
+                      }
                     })
-                })
+                  })                  
                 nextTurn()
             }
             else {
@@ -62,6 +65,7 @@ function Grid() {
         setFirstChoice(null)
         setSecondChoice(null)
         setTries(tries+1)
+        setIsProcessing(false)
     }
 
 
@@ -71,7 +75,7 @@ function Grid() {
             <p><b>It took you {tries} tries to beat the game.</b></p>
             <div className="Grid">
                 {cards.map(card =>
-                    <Card key={card.id} card={card} clickCallee={clickCallee} flipped={card === firstChoice || card === secondChoice || card.matched} />
+                    <Card key={card.id} card={card} clickCallee={clickCallee} flipped={card === firstChoice || card === secondChoice || card.matched}/>
                 )}
             </div>
 
