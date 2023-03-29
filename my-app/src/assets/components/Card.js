@@ -1,4 +1,5 @@
 import React from "react";
+import "../css/Card.css"
 import backPNG from "../img/back.png";
 
 
