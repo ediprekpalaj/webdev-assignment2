@@ -3,7 +3,7 @@ import "../css/Card.css"
 import backPNG from "../img/back.png";
 
 
-export default function Card({ card, clickCallee, flipped, disabled }) {
+export default function Card({ card, clickCallee, flipped }) {
     function clickCaller() {
         clickCallee(card)
     }

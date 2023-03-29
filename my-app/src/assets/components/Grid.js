@@ -14,7 +14,6 @@ function Grid() {
     const [tries, setTries] = useState(0)
     const [firstChoice, setFirstChoice] = useState(null)
     const [secondChoice, setSecondChoice] = useState(null)
-    const [isProcessing, setIsProcessing] = useState(false);
 
 
     const cardImages = [australiaPNG, brazilPNG, canadaPNG, chinaPNG, russiaPNG, usPNG];
@@ -28,15 +27,18 @@ function Grid() {
     
     //Check choices
     function clickCallee(card) {
-        // If the first choice is not set, set it to the clicked card
-        if (firstChoice === null) {
-            setFirstChoice(card);
+        if (firstChoice && secondChoice && !card.matched) {
+            return;
         }
-        // If the first choice is set but the second choice is not, set the second choice to the clicked card
-        else if (secondChoice === null) {
+        if (firstChoice !== card && !card.matched) {
+          if (firstChoice) {
             setSecondChoice(card);
+          } else {
+            setFirstChoice(card);
+          }
         }
     }
+      
 
     //Card choice comparison
     useEffect(() => {
@@ -62,11 +64,14 @@ function Grid() {
     }, [firstChoice, secondChoice])
 
     function nextTurn() {
-        setFirstChoice(null)
-        setSecondChoice(null)
-        setTries(tries+1)
-        setIsProcessing(false)
-    }
+        cards.forEach(card => {
+          card.isFlipped = false; // Reset the "isFlipped" flag for each card
+        });
+        setFirstChoice(null);
+        setSecondChoice(null);
+        setTries(tries+1);
+      }
+      
 
 
     return (
