@@ -14,6 +14,7 @@ function Grid() {
     const [tries, setTries] = useState(0)
     const [firstChoice, setFirstChoice] = useState(null)
     const [secondChoice, setSecondChoice] = useState(null)
+    const [pairs, setPairs] = useState(0)
 
 
     const cardImages = [australiaPNG, brazilPNG, canadaPNG, chinaPNG, russiaPNG, usPNG];
@@ -21,8 +22,11 @@ function Grid() {
     //Shuffle and duplicate all of the cards that will be displayed on the grid
     function newGame() {
         const finalCards = [...cardImages, ...cardImages].sort(() => Math.random() - 0.5).map((src) => ({ src, id: Math.random(), matched: false }))
+        setFirstChoice(null)
+        setSecondChoice(null)
         setCards(finalCards)
         setTries(0)
+        setPairs(0)
     }
     
     //Check choices
@@ -53,7 +57,8 @@ function Grid() {
                             return card
                       }
                     })
-                  })                  
+                  })
+                setPairs(pairs+1)                  
                 nextTurn()
             }
             else {
@@ -70,14 +75,33 @@ function Grid() {
         setFirstChoice(null);
         setSecondChoice(null);
         setTries(tries+1);
-      }
+    }
+
+
+    //This useEffect displays the final message
+    useEffect( () => {
+        if(pairs == 6) {
+            setTimeout(() => {
+                const finalMessage = `CONGRATULATIONS! You finished my memory game in ${tries} tries.`;
+                if (window.confirm(finalMessage)) {
+                  newGame();
+                }
+              }, 500);
+        }
+    }, [tries, pairs])
+
       
+    //Automatically start a new game
+    useEffect( () => {
+        newGame()
+    }, [])
+
 
 
     return (
         <div>
             <button onClick={newGame}>NEW GAME</button>
-            <p><b>It took you {tries} tries to beat the game.</b></p>
+            <p><b>Current tries: {tries}</b></p>
             <div className="Grid">
                 {cards.map(card =>
                     <Card key={card.id} card={card} clickCallee={clickCallee} flipped={card === firstChoice || card === secondChoice || card.matched}/>
