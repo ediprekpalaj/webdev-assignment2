@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Card from "../components/Card.js";
+import "../css/Grid.css"
 import australiaPNG from "../img/australia.png";
 import brazilPNG from "../img/brazil.png";
 import canadaPNG from "../img/canada.png";
@@ -24,6 +25,7 @@ function Grid() {
     return (
         <div>
             <button onClick={newGame}>NEW GAME</button>
+            <p><b>It took you {tries} tries to beat the game.</b></p>
             <div className="Grid">
                 {cards.map(card =>
                     <Card key={card.id} card={card} />
